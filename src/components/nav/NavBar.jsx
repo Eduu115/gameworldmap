@@ -9,33 +9,40 @@ export function NavBar({ activeView, onChangeView, totalGames, totalCountries, o
       <div className="nav-tabs" role="tablist" aria-label="Vistas">
         <button
           type="button"
+          className={`nav-tab ${activeView === 'home' ? 'active' : ''}`}
+          onClick={() => onChangeView('home')}
+        >
+          HOME
+        </button>
+        <button
+          type="button"
           className={`nav-tab ${activeView === 'map' ? 'active' : ''}`}
           onClick={() => onChangeView('map')}
         >
-          MAPA
+          MAP
         </button>
         <button
           type="button"
           className={`nav-tab ${activeView === 'list' ? 'active' : ''}`}
           onClick={() => onChangeView('list')}
         >
-          LISTA
+          LIST
         </button>
         <button
           type="button"
           className={`nav-tab ${activeView === 'stats' ? 'active' : ''}`}
           onClick={() => onChangeView('stats')}
         >
-          ESTAD.
+          STATS
         </button>
       </div>
 
       <div className="nav-right">
-        <div className="stats-pill" aria-label="Estadísticas">
-          <span>{totalGames}</span> juegos &nbsp;|&nbsp; <span>{totalCountries}</span> países
+        <div className="stats-pill" aria-label="Stats">
+          <span>{totalGames}</span> games &nbsp;|&nbsp; <span>{totalCountries}</span> countries
         </div>
         <button type="button" className="add-btn" onClick={onAddGame}>
-          + AÑADIR
+          + ADD
         </button>
       </div>
     </nav>

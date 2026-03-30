@@ -34,7 +34,7 @@ export function AddGameModal({ open, onClose, onSave }) {
   const save = () => {
     const cleanTitle = title.trim()
     if (!cleanTitle || !countryId) {
-      window.alert('Rellena al menos el título y el país.')
+      window.alert('Please provide at least a title and a country.')
       return
     }
 
@@ -57,19 +57,19 @@ export function AddGameModal({ open, onClose, onSave }) {
   }
 
   return (
-    <div className={`add-form ${open ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Añadir juego">
+    <div className={`add-form ${open ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Add game">
       <div className="form-card">
-        <div className="form-title">+ AÑADIR JUEGO</div>
+        <div className="form-title">+ ADD GAME</div>
 
         <div className="form-group">
           <label className="form-label" htmlFor="f-title">
-            Título del juego
+            Game title
           </label>
           <input
             className="form-input"
             id="f-title"
             type="text"
-            placeholder="Ej: Elden Ring"
+            placeholder="e.g. Elden Ring"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -78,7 +78,7 @@ export function AddGameModal({ open, onClose, onSave }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <div className="form-group">
             <label className="form-label" htmlFor="f-country">
-              País de origen
+              Country of origin
             </label>
             <select
               className="form-input"
@@ -86,7 +86,7 @@ export function AddGameModal({ open, onClose, onSave }) {
               value={countryId}
               onChange={(e) => setCountryId(e.target.value)}
             >
-              <option value="">Selecciona...</option>
+              <option value="">Select...</option>
               {countryOptions.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.flag} {c.name}
@@ -96,7 +96,7 @@ export function AddGameModal({ open, onClose, onSave }) {
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="f-year">
-              Año
+              Year
             </label>
             <input
               className="form-input"
@@ -113,13 +113,13 @@ export function AddGameModal({ open, onClose, onSave }) {
 
         <div className="form-group">
           <label className="form-label" htmlFor="f-studio">
-            Estudio
+            Studio
           </label>
           <input
             className="form-input"
             id="f-studio"
             type="text"
-            placeholder="Ej: FromSoftware"
+            placeholder="e.g. FromSoftware"
             value={studio}
             onChange={(e) => setStudio(e.target.value)}
           />
@@ -128,17 +128,17 @@ export function AddGameModal({ open, onClose, onSave }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <div className="form-group">
             <label className="form-label" htmlFor="f-status">
-              Estado
+              Status
             </label>
             <select className="form-select" id="f-status" value={status} onChange={(e) => setStatus(e.target.value)}>
-              <option value="completed">✓ Completado</option>
-              <option value="playing">▶ Jugando</option>
+              <option value="completed">✓ Completed</option>
+              <option value="playing">▶ Playing</option>
               <option value="wishlist">◈ Wishlist</option>
-              <option value="abandoned">✕ Abandonado</option>
+              <option value="abandoned">✕ Dropped</option>
             </select>
           </div>
           <div className="form-group">
-            <label className="form-label">Tu puntuación</label>
+            <label className="form-label">Your rating</label>
             <div className="rating-row">
               {[1, 2, 3, 4, 5].map((r) => (
                 <button
@@ -146,7 +146,7 @@ export function AddGameModal({ open, onClose, onSave }) {
                   type="button"
                   className={`star-btn ${r <= rating ? 'lit' : ''}`}
                   onClick={() => setRating(r)}
-                  aria-label={`Puntuación ${r}`}
+                  aria-label={`Rating ${r}`}
                 >
                   ★
                 </button>
@@ -157,10 +157,10 @@ export function AddGameModal({ open, onClose, onSave }) {
 
         <div className="form-actions">
           <button type="button" className="btn-cancel" onClick={onClose}>
-            CANCELAR
+            CANCEL
           </button>
           <button type="button" className="btn-save" onClick={save}>
-            GUARDAR JUEGO
+            SAVE GAME
           </button>
         </div>
       </div>

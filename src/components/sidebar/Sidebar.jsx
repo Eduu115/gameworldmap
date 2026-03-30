@@ -13,10 +13,10 @@ export function Sidebar({
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <div className="sidebar-title">País seleccionado</div>
+        <div className="sidebar-title">Selected country</div>
         <div className="selected-country">
           <span className="flag">{selectedCountry?.flag ?? '🌍'}</span>
-          <span>{selectedCountry?.name ?? 'Haz clic en un país'}</span>
+          <span>{selectedCountry?.name ?? 'Click a country'}</span>
         </div>
       </div>
 
@@ -26,7 +26,7 @@ export function Sidebar({
           className={`sidebar-tab ${activeTab === 'games' ? 'active' : ''}`}
           onClick={() => onChangeTab('games')}
         >
-          JUEGOS
+          GAMES
         </button>
         <button
           type="button"
@@ -39,7 +39,7 @@ export function Sidebar({
 
       <div className="achievement-bar">
         <div className="ach-label">
-          <span>PROGRESO GLOBAL</span>
+          <span>GLOBAL PROGRESS</span>
           <span className="ach-val">{progressPct}%</span>
         </div>
         <div className="ach-track">
@@ -50,19 +50,19 @@ export function Sidebar({
       <div className="filter-bar">
         <FilterChip
           status="completed"
-          label="✓ Completado"
+          label="✓ Completed"
           active={activeFilters.includes('completed')}
           onClick={() => onToggleFilter('completed')}
         />
         <FilterChip
           status="playing"
-          label="▶ Jugando"
+          label="▶ Playing"
           active={activeFilters.includes('playing')}
           onClick={() => onToggleFilter('playing')}
         />
         <FilterChip
           status="abandoned"
-          label="✕ Abandonado"
+          label="✕ Dropped"
           active={activeFilters.includes('abandoned')}
           onClick={() => onToggleFilter('abandoned')}
         />
@@ -77,9 +77,9 @@ export function Sidebar({
       {activeTab === 'games' ? <GameList selectedCountry={selectedCountry} games={games} /> : <SidebarInfo />}
 
       <div className="sidebar-stats">
-        <StatCell value={stats.completed ?? 0} label="Complet." />
-        <StatCell value={stats.playing ?? 0} label="Jugando" />
-        <StatCell value={stats.countries ?? 0} label="Países" />
+        <StatCell value={stats.completed ?? 0} label="Done" />
+        <StatCell value={stats.playing ?? 0} label="Playing" />
+        <StatCell value={stats.countries ?? 0} label="Countries" />
       </div>
     </div>
   )
@@ -102,8 +102,7 @@ function GameList({ selectedCountry, games }) {
     return (
       <div className="game-list">
         <div className="empty-state">
-          <div className="empty-icon">🗺️</div>
-          <div className="empty-text">Haz clic en cualquier país del mapa para ver sus juegos</div>
+          <div className="empty-text">Click any country on the map to see its games</div>
         </div>
       </div>
     )
@@ -113,8 +112,7 @@ function GameList({ selectedCountry, games }) {
     return (
       <div className="game-list">
         <div className="empty-state">
-          <div className="empty-icon">🎮</div>
-          <div className="empty-text">No hay juegos con los filtros activos para este país.</div>
+          <div className="empty-text">No games match your current filters for this country.</div>
         </div>
       </div>
     )
@@ -146,8 +144,7 @@ function SidebarInfo() {
   return (
     <div className="game-list">
       <div className="empty-state">
-        <div className="empty-icon">ℹ️</div>
-        <div className="empty-text">Aquí puedes añadir información del país, estudios destacados, notas, etc.</div>
+        <div className="empty-text">Country notes, studios, and links can live here.</div>
       </div>
     </div>
   )

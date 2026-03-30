@@ -7,9 +7,10 @@ import { Toast } from './components/feedback/Toast'
 import { SEED_GAMES } from './data/seedGames'
 import { uniqueCountriesCount } from './utils/gameStats'
 import { MapPage } from './pages/MapPage'
+import { LandingPage } from './pages/LandingPage'
 
 function App() {
-  const [activeView, setActiveView] = useState('map')
+  const [activeView, setActiveView] = useState('home')
   const [games, setGames] = useState(() => SEED_GAMES)
   const [selectedCountryId, setSelectedCountryId] = useState(null)
   const [activeFilters, setActiveFilters] = useState(['completed', 'playing', 'abandoned', 'wishlist'])
@@ -19,9 +20,10 @@ function App() {
   const totalCountries = useMemo(() => uniqueCountriesCount(games), [games])
 
   useEffect(() => {
+    if (activeView !== 'map') return
     const t = window.setTimeout(() => setSelectedCountryId('japan'), 600)
     return () => window.clearTimeout(t)
-  }, [])
+  }, [activeView])
 
   const toggleFilter = (status) => {
     setActiveFilters((prev) => (prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]))
@@ -37,16 +39,25 @@ function App() {
   return (
     <AppShell
       nav={
-        <NavBar
-          activeView={activeView}
-          onChangeView={setActiveView}
-          totalGames={games.length}
-          totalCountries={totalCountries}
-          onAddGame={() => setAddOpen(true)}
-        />
+        activeView === 'home' ? null : (
+          <NavBar
+            activeView={activeView}
+            onChangeView={setActiveView}
+            totalGames={games.length}
+            totalCountries={totalCountries}
+            onAddGame={() => setAddOpen(true)}
+          />
+        )
       }
     >
-      {activeView === 'map' ? (
+      {activeView === 'home' ? (
+        <LandingPage
+          onGoToMap={() => setActiveView('map')}
+          onAddGame={() => setAddOpen(true)}
+          totalGames={games.length}
+          totalCountries={totalCountries}
+        />
+      ) : activeView === 'map' ? (
         <MapPage
           games={games}
           selectedCountryId={selectedCountryId}
@@ -76,7 +87,7 @@ function App() {
         message={
           toast.title ? (
             <>
-              <strong>{toast.title}</strong> añadido al mapa
+              <strong>{toast.title}</strong> added to your map
             </>
           ) : null
         }

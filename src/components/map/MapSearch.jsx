@@ -7,7 +7,7 @@ export function MapSearch({ value, onChange }) {
       <input
         type="text"
         value={value}
-        placeholder="Buscar país o juego..."
+        placeholder="Search country or game..."
         onChange={(e) => onChange(e.target.value)}
       />
     </div>

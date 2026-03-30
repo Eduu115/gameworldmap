@@ -3,9 +3,9 @@ export const STATUSES = /** @type {const} */ (['completed', 'playing', 'abandone
 export function statusLabel(status) {
   return (
     {
-      completed: 'COMPLET.',
-      playing: 'JUGANDO',
-      abandoned: 'ABANDON.',
+      completed: 'COMPLETED',
+      playing: 'PLAYING',
+      abandoned: 'DROPPED',
       wishlist: 'WISHLIST',
     }[status] ?? status
   )

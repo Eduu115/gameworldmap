@@ -18,6 +18,10 @@ function buildGameCountsByCountryId(games) {
 export function MapPage({ games, selectedCountryId, onSelectCountryId, activeFilters, onToggleFilter }) {
   const [sidebarTab, setSidebarTab] = useState('games')
   const [search, setSearch] = useState('')
+  const [zoom, setZoom] = useState(1)
+  const ZOOM_MIN = 1
+  const ZOOM_MAX = 2.4
+  const ZOOM_STEP = 0.2
 
   const gameCountsByCountryId = useMemo(() => buildGameCountsByCountryId(games), [games])
 
@@ -59,22 +63,33 @@ export function MapPage({ games, selectedCountryId, onSelectCountryId, activeFil
   return (
     <div className="main">
       <div className="map-container">
-        <div className="screen-label">MAPA MUNDIAL — HAZ CLIC EN UN PAÍS</div>
+        <div className="screen-label">WORLD MAP — CLICK A COUNTRY</div>
 
         <MapSearch value={search} onChange={setSearch} />
 
-        <WorldMapSvg
-          highlightedCountryId={selectedCountryId}
-          gameCountsByCountryId={gameCountsByCountryId}
-          onSelectCountryId={onSelectCountryId}
-        />
+        <div className="map-viewport" style={{ transform: `scale(${zoom})` }}>
+          <WorldMapSvg
+            highlightedCountryId={selectedCountryId}
+            gameCountsByCountryId={gameCountsByCountryId}
+            onSelectCountryId={onSelectCountryId}
+          />
+        </div>
 
         <CountryTooltip
           country={selectedCountry}
           gamesCount={selectedCountryId ? gameCountsByCountryId[selectedCountryId] ?? 0 : 0}
         />
 
-        <MapControls onReset={() => onSelectCountryId(null)} />
+        <MapControls
+          canZoomIn={zoom < ZOOM_MAX}
+          canZoomOut={zoom > ZOOM_MIN}
+          onZoomIn={() => setZoom((z) => Math.min(ZOOM_MAX, Math.round((z + ZOOM_STEP) * 10) / 10))}
+          onZoomOut={() => setZoom((z) => Math.max(ZOOM_MIN, Math.round((z - ZOOM_STEP) * 10) / 10))}
+          onReset={() => {
+            onSelectCountryId(null)
+            setZoom(1)
+          }}
+        />
         <MapLegend />
       </div>
 
