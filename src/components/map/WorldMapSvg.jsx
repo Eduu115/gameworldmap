@@ -95,6 +95,26 @@ export function WorldMapSvg({ highlightedCountryId, gameCountsByCountryId, onSel
         onClick={() => select('poland')}
       />
 
+      {/* Europa sur / Balcanes (mejora de definición) */}
+      <path
+        id="italy"
+        className={pathClass('italy')}
+        d="M410,150 L430,148 L438,160 L432,175 L420,183 L408,176 L412,164 Z"
+        onClick={() => select('italy')}
+      />
+      <path
+        id="balkans"
+        className={pathClass('balkans')}
+        d="M438,148 L472,146 L480,160 L470,178 L442,180 L432,170 Z"
+        onClick={() => select('balkans')}
+      />
+      <path
+        id="greece"
+        className={pathClass('greece')}
+        d="M452,182 L480,180 L490,196 L468,205 L450,198 Z"
+        onClick={() => select('greece')}
+      />
+
       <path
         id="russia"
         className={pathClass('russia')}
@@ -105,21 +125,21 @@ export function WorldMapSvg({ highlightedCountryId, gameCountsByCountryId, onSel
       <path
         id="japan"
         className={pathClass('japan')}
-        d="M750,130 L770,125 L775,160 L755,165 Z"
+        d="M760,122 L774,126 L778,144 L770,158 L756,154 L752,138 Z"
         onClick={() => select('japan')}
       />
 
       <path
         id="korea"
         className={pathClass('korea')}
-        d="M720,130 L745,128 L747,155 L722,158 Z"
+        d="M723,128 L744,128 L748,142 L742,156 L724,156 Z"
         onClick={() => select('korea')}
       />
 
       <path
         id="china"
         className={pathClass('china')}
-        d="M620,110 L718,108 L720,170 L680,180 L620,175 L615,145 Z"
+        d="M615,108 L720,108 L724,140 L712,168 L680,182 L626,174 L610,145 Z"
         onClick={() => select('china')}
       />
 
@@ -186,7 +206,7 @@ export function WorldMapSvg({ highlightedCountryId, gameCountsByCountryId, onSel
       <path
         id="seasia"
         className={pathClass('seasia')}
-        d="M660,200 L720,195 L725,255 L665,260 Z"
+        d="M658,194 L722,192 L732,215 L725,255 L665,262 L652,232 Z"
         onClick={() => select('seasia')}
       />
 

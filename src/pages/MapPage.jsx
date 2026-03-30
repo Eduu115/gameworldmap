@@ -59,7 +59,7 @@ export function MapPage({ games, selectedCountryId, onSelectCountryId, activeFil
   return (
     <div className="main">
       <div className="map-container">
-        <div className="screen-label">WORLD MAP — CLICK COUNTRY</div>
+        <div className="screen-label">MAPA MUNDIAL — HAZ CLIC EN UN PAÍS</div>
 
         <MapSearch value={search} onChange={setSearch} />
 
@@ -69,7 +69,10 @@ export function MapPage({ games, selectedCountryId, onSelectCountryId, activeFil
           onSelectCountryId={onSelectCountryId}
         />
 
-        <CountryTooltip country={selectedCountry} gamesCount={selectedCountryId ? gameCountsByCountryId[selectedCountryId] ?? 0 : 0} />
+        <CountryTooltip
+          country={selectedCountry}
+          gamesCount={selectedCountryId ? gameCountsByCountryId[selectedCountryId] ?? 0 : 0}
+        />
 
         <MapControls onReset={() => onSelectCountryId(null)} />
         <MapLegend />

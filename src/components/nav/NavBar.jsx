@@ -12,21 +12,21 @@ export function NavBar({ activeView, onChangeView, totalGames, totalCountries, o
           className={`nav-tab ${activeView === 'map' ? 'active' : ''}`}
           onClick={() => onChangeView('map')}
         >
-          MAP
+          MAPA
         </button>
         <button
           type="button"
           className={`nav-tab ${activeView === 'list' ? 'active' : ''}`}
           onClick={() => onChangeView('list')}
         >
-          LIST
+          LISTA
         </button>
         <button
           type="button"
           className={`nav-tab ${activeView === 'stats' ? 'active' : ''}`}
           onClick={() => onChangeView('stats')}
         >
-          STATS
+          ESTAD.
         </button>
       </div>
 
