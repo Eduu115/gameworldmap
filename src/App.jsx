@@ -1,120 +1,88 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
+import { useEffect, useMemo, useState } from 'react'
+import { NavBar } from './components/nav/NavBar'
+import { AppShell } from './components/layout/AppShell'
+import { AddGameModal } from './components/modals/AddGameModal'
+import { Toast } from './components/feedback/Toast'
+import { SEED_GAMES } from './data/seedGames'
+import { uniqueCountriesCount } from './utils/gameStats'
+import { MapPage } from './pages/MapPage'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeView, setActiveView] = useState('map')
+  const [games, setGames] = useState(() => SEED_GAMES)
+  const [selectedCountryId, setSelectedCountryId] = useState(null)
+  const [activeFilters, setActiveFilters] = useState(['completed', 'playing', 'abandoned', 'wishlist'])
+  const [addOpen, setAddOpen] = useState(false)
+  const [toast, setToast] = useState({ open: false, title: null })
+
+  const totalCountries = useMemo(() => uniqueCountriesCount(games), [games])
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setSelectedCountryId('japan'), 600)
+    return () => window.clearTimeout(t)
+  }, [])
+
+  const toggleFilter = (status) => {
+    setActiveFilters((prev) => (prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]))
+  }
+
+  const saveGame = (game) => {
+    setGames((prev) => [...prev, game])
+    setAddOpen(false)
+    setSelectedCountryId(game.countryId)
+    setToast({ open: true, title: game.title })
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <AppShell
+      nav={
+        <NavBar
+          activeView={activeView}
+          onChangeView={setActiveView}
+          totalGames={games.length}
+          totalCountries={totalCountries}
+          onAddGame={() => setAddOpen(true)}
+        />
+      }
+    >
+      {activeView === 'map' ? (
+        <MapPage
+          games={games}
+          selectedCountryId={selectedCountryId}
+          onSelectCountryId={setSelectedCountryId}
+          activeFilters={activeFilters}
+          onToggleFilter={toggleFilter}
+        />
+      ) : (
+        <div className="main">
+          <div className="map-container" style={{ display: 'grid', placeItems: 'center' }}>
+            <div className="empty-state">
+              <div className="empty-icon">🚧</div>
+              <div className="empty-text">
+                Vista <strong>{activeView.toUpperCase()}</strong> pendiente. La hemos dejado preparada con tabs para
+                implementarla en `src/pages/`.
+              </div>
+            </div>
+          </div>
+          <div className="sidebar" />
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      )}
 
-      <div className="ticks"></div>
+      <AddGameModal open={addOpen} onClose={() => setAddOpen(false)} onSave={saveGame} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <Toast
+        open={toast.open}
+        message={
+          toast.title ? (
+            <>
+              <strong>{toast.title}</strong> añadido al mapa
+            </>
+          ) : null
+        }
+        onClose={() => setToast({ open: false, title: null })}
+      />
+    </AppShell>
   )
 }
 
