@@ -1,0 +1,5 @@
+Que sea un mapa predefinido GLOBAL, CON LO MAS DESTACADO POR LO MENOS de lo que haya salido hasta ahora, conectandose a alguna api
+publica de videojuegos o algo <- que esto salga en el navbar como "Global map" o algo así, que además esté luego "Custom map"
+Que sería pues lo que tengo hasta ahora no ? probar con esas cosas y ver
+Añadir todo tema de backlog y demás.€€€€©©©©©©ƒƒ†††®®æææœœπøøπø ~ ~ ~ ~ ~ ~ ~ d¢¢¢¢¢~~~¢¢¢###@#¢∞∞¬¬¬÷÷“÷“”““““"""
+Se oculta el buscar con el zoom del mapa
