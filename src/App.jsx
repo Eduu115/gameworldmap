@@ -8,6 +8,8 @@ import { SEED_GAMES } from './data/seedGames'
 import { uniqueCountriesCount } from './utils/gameStats'
 import { MapPage } from './pages/MapPage'
 import { LandingPage } from './pages/LandingPage'
+import { ListPage } from './pages/ListPage'
+import { StatsPage } from './pages/StatsPage'
 
 function App() {
   const [activeView, setActiveView] = useState('home')
@@ -65,14 +67,21 @@ function App() {
           activeFilters={activeFilters}
           onToggleFilter={toggleFilter}
         />
+      ) : activeView === 'list' ? (
+        <ListPage
+          games={games}
+          activeFilters={activeFilters}
+          onToggleFilter={toggleFilter}
+        />
+      ) : activeView === 'stats' ? (
+        <StatsPage games={games} />
       ) : (
         <div className="main">
           <div className="map-container" style={{ display: 'grid', placeItems: 'center' }}>
             <div className="empty-state">
               <div className="empty-icon">🚧</div>
               <div className="empty-text">
-                Vista <strong>{activeView.toUpperCase()}</strong> pendiente. La hemos dejado preparada con tabs para
-                implementarla en `src/pages/`.
+                Vista <strong>{activeView.toUpperCase()}</strong> pendiente.
               </div>
             </div>
           </div>

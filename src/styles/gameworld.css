@@ -265,6 +265,8 @@ nav {
   width: 280px;
   height: 36px;
   transition: border-color 0.15s;
+  z-index: 50;
+  pointer-events: all;
 }
 
 .map-search:focus-within {

@@ -169,6 +169,7 @@ export function MapPage({ games, selectedCountryId, onSelectCountryId, activeFil
         activeFilters={activeFilters}
         onToggleFilter={onToggleFilter}
         games={selectedGames}
+        allGames={games}
         stats={{
           completed: globalStats.completed,
           playing: globalStats.playing,

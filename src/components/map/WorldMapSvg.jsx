@@ -15,7 +15,7 @@ export function WorldMapSvg({ highlightedCountryId, gameCountsByCountryId, onSel
   const select = (id) => onSelectCountryId(id)
 
   return (
-    <svg className="map-svg" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+    <svg className="map-svg" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
       <rect width="900" height="500" fill="#060A14" />
 
       {/* Ocean texture lines */}
