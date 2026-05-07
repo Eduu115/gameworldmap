@@ -1,4 +1,4 @@
-export function NavBar({ activeView, onChangeView, totalGames, totalCountries, onAddGame }) {
+export function NavBar({ activeView, onChangeView, totalGames, totalCountries, user, onLogin }) {
   return (
     <nav>
       <div className="logo" aria-label="Gameworld">
@@ -7,13 +7,6 @@ export function NavBar({ activeView, onChangeView, totalGames, totalCountries, o
       </div>
 
       <div className="nav-tabs" role="tablist" aria-label="Vistas">
-        <button
-          type="button"
-          className={`nav-tab ${activeView === 'home' ? 'active' : ''}`}
-          onClick={() => onChangeView('home')}
-        >
-          HOME
-        </button>
         <button
           type="button"
           className={`nav-tab ${activeView === 'map' ? 'active' : ''}`}
@@ -41,11 +34,16 @@ export function NavBar({ activeView, onChangeView, totalGames, totalCountries, o
         <div className="stats-pill" aria-label="Stats">
           <span>{totalGames}</span> games &nbsp;|&nbsp; <span>{totalCountries}</span> countries
         </div>
-        <button type="button" className="add-btn" onClick={onAddGame}>
-          + ADD
-        </button>
+        {user ? (
+          <div style={{ fontSize: 12, color: 'var(--yellow)', fontFamily: 'monospace' }}>
+            {user.email.split('@')[0]}
+          </div>
+        ) : (
+          <button type="button" className="add-btn" onClick={onLogin}>
+            LOG IN
+          </button>
+        )}
       </div>
     </nav>
   )
 }
-

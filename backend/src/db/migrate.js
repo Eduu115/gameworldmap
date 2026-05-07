@@ -5,7 +5,7 @@ import { pool } from './index.js'
 
 const __dir = dirname(fileURLToPath(import.meta.url))
 
-const migrations = ['001_initial.sql']
+const migrations = ['001_initial.sql', '002_countries_iso.sql']
 
 async function run() {
   const client = await pool.connect()

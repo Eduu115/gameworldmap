@@ -2,24 +2,36 @@ import './App.css'
 import { useEffect, useMemo, useState } from 'react'
 import { NavBar } from './components/nav/NavBar'
 import { AppShell } from './components/layout/AppShell'
-import { AddGameModal } from './components/modals/AddGameModal'
 import { Toast } from './components/feedback/Toast'
-import { SEED_GAMES } from './data/seedGames'
-import { uniqueCountriesCount } from './utils/gameStats'
 import { MapPage } from './pages/MapPage'
 import { LandingPage } from './pages/LandingPage'
 import { ListPage } from './pages/ListPage'
 import { StatsPage } from './pages/StatsPage'
+import { api, normalizeGame } from './api.js'
 
 function App() {
   const [activeView, setActiveView] = useState('home')
-  const [games, setGames] = useState(() => SEED_GAMES)
+  const [games, setGames] = useState([])
+  const [loading, setLoading] = useState(true)
   const [selectedCountryId, setSelectedCountryId] = useState(null)
-  const [activeFilters, setActiveFilters] = useState(['completed', 'playing', 'abandoned', 'wishlist'])
-  const [addOpen, setAddOpen] = useState(false)
-  const [toast, setToast] = useState({ open: false, title: null })
+  const [user, setUser] = useState(null)
+  const [toast, setToast] = useState({ open: false, message: null })
 
-  const totalCountries = useMemo(() => uniqueCountriesCount(games), [games])
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      try {
+        const data = await api.games({ limit: 500, page: 1 })
+        if (!cancelled) setGames(data.results.map(normalizeGame))
+      } catch (err) {
+        console.error('Failed to load games:', err)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    load()
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     if (activeView !== 'map') return
@@ -27,16 +39,12 @@ function App() {
     return () => window.clearTimeout(t)
   }, [activeView])
 
-  const toggleFilter = (status) => {
-    setActiveFilters((prev) => (prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]))
-  }
+  const totalCountries = useMemo(
+    () => new Set(games.map((g) => g.countryId).filter(Boolean)).size,
+    [games],
+  )
 
-  const saveGame = (game) => {
-    setGames((prev) => [...prev, game])
-    setAddOpen(false)
-    setSelectedCountryId(game.countryId)
-    setToast({ open: true, title: game.title })
-  }
+  const showToast = (message) => setToast({ open: true, message })
 
   return (
     <AppShell
@@ -47,15 +55,23 @@ function App() {
             onChangeView={setActiveView}
             totalGames={games.length}
             totalCountries={totalCountries}
-            onAddGame={() => setAddOpen(true)}
+            user={user}
+            onLogin={() => showToast('Login coming soon!')}
           />
         )
       }
     >
-      {activeView === 'home' ? (
+      {loading ? (
+        <div className="main">
+          <div className="map-container" style={{ display: 'grid', placeItems: 'center' }}>
+            <div className="empty-state">
+              <div className="empty-text">Loading catalog...</div>
+            </div>
+          </div>
+        </div>
+      ) : activeView === 'home' ? (
         <LandingPage
           onGoToMap={() => setActiveView('map')}
-          onAddGame={() => setAddOpen(true)}
           totalGames={games.length}
           totalCountries={totalCountries}
         />
@@ -64,43 +80,17 @@ function App() {
           games={games}
           selectedCountryId={selectedCountryId}
           onSelectCountryId={setSelectedCountryId}
-          activeFilters={activeFilters}
-          onToggleFilter={toggleFilter}
         />
       ) : activeView === 'list' ? (
-        <ListPage
-          games={games}
-          activeFilters={activeFilters}
-          onToggleFilter={toggleFilter}
-        />
+        <ListPage games={games} user={user} onLoginRequired={() => showToast('Login to track games')} />
       ) : activeView === 'stats' ? (
         <StatsPage games={games} />
-      ) : (
-        <div className="main">
-          <div className="map-container" style={{ display: 'grid', placeItems: 'center' }}>
-            <div className="empty-state">
-              <div className="empty-icon">🚧</div>
-              <div className="empty-text">
-                Vista <strong>{activeView.toUpperCase()}</strong> pendiente.
-              </div>
-            </div>
-          </div>
-          <div className="sidebar" />
-        </div>
-      )}
-
-      <AddGameModal open={addOpen} onClose={() => setAddOpen(false)} onSave={saveGame} />
+      ) : null}
 
       <Toast
         open={toast.open}
-        message={
-          toast.title ? (
-            <>
-              <strong>{toast.title}</strong> added to your map
-            </>
-          ) : null
-        }
-        onClose={() => setToast({ open: false, title: null })}
+        message={toast.message}
+        onClose={() => setToast({ open: false, message: null })}
       />
     </AppShell>
   )

@@ -1,20 +1,16 @@
 import { useMemo } from 'react'
 import { statusLabel } from '../utils/status'
-import { countByStatus } from '../utils/gameStats'
 
-export function ListPage({ games, activeFilters, onToggleFilter }) {
-  const filteredGames = useMemo(() => {
-    return games.filter(g => activeFilters.includes(g.status))
-  }, [games, activeFilters])
-
-  const stats = useMemo(() => countByStatus(games), [games])
+export function ListPage({ games, trackedGames = [], activeFilters, onToggleFilter }) {
+  // Full catalog — search filter only, no status filter (status is user-specific)
+  const filteredGames = games
 
   const statusCounts = useMemo(() => ({
-    completed: games.filter(g => g.status === 'completed').length,
-    playing: games.filter(g => g.status === 'playing').length,
-    abandoned: games.filter(g => g.status === 'abandoned').length,
-    wishlist: games.filter(g => g.status === 'wishlist').length,
-  }), [games])
+    completed: trackedGames.filter(g => g.status === 'completed').length,
+    playing: trackedGames.filter(g => g.status === 'playing').length,
+    abandoned: trackedGames.filter(g => g.status === 'abandoned').length,
+    wishlist: trackedGames.filter(g => g.status === 'wishlist').length,
+  }), [trackedGames])
 
   return (
     <div className="main">

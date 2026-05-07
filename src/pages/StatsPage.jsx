@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { countByStatus, progressPct as calculateProgress } from '../utils/gameStats'
 
-export function StatsPage({ games }) {
-  const stats = useMemo(() => countByStatus(games), [games])
-  const progress = useMemo(() => calculateProgress(games), [games])
+export function StatsPage({ games, trackedGames = [] }) {
+  const stats = useMemo(() => countByStatus(trackedGames), [trackedGames])
+  const progress = useMemo(() => calculateProgress(trackedGames), [trackedGames])
 
   const gamesByCountry = useMemo(() => {
     const result = {}
